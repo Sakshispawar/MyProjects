@@ -26,10 +26,10 @@ const featuredImages2 = [
 ];
 const featuredTitles1 = [
  womendress,
-  girsdresses,girlswatches
+  jwellery,kidstoys
 ];
 const featuredTitles2 = [
- boysglasses,mobilephones,tShirts
+  automobile,furniture,cellphone
 ];
 
 const categoriesList=[

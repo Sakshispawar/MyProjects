@@ -1,6 +1,5 @@
 import 'package:emart_app/consts/consts.dart';
 
-
 class FireStoreServices {
   // get users data
   static getUSer(uid) {
@@ -15,6 +14,12 @@ class FireStoreServices {
     return firestore
         .collection(productsCollection)
         .where('p_category', isEqualTo: category)
+        .snapshots();
+  }
+  static getSubCategoryProducts(title){
+    return firestore
+        .collection(productsCollection)
+        .where('p_subcategory', isEqualTo: title)
         .snapshots();
   }
 
@@ -40,4 +45,70 @@ class FireStoreServices {
         .orderBy('created_on', descending: false)
         .snapshots();
   }
+
+  // to display orders
+  static getAllOrder() {
+    return firestore
+        .collection(ordersCollection)
+        .where('order_by', isEqualTo: currentUser!.uid)
+        .snapshots();
+  }
+
+  static getWishlist() {
+    return firestore
+        .collection(productsCollection)
+        .where('p_wishlist', arrayContains: currentUser!.uid)
+        .snapshots();
+  }
+
+  static getAllMessages() {
+    return firestore
+        .collection(chatsCollection)
+        .where('fromId', isEqualTo: currentUser!.uid)
+        .snapshots();
+  }
+
+  static getCounts() async {
+    var res = await Future.wait([
+      firestore
+          .collection(cardCollection)
+          .where('added_by', isEqualTo: currentUser!.uid)
+          .get()
+          .then((value) {
+        return value.docs.length;
+      }),
+      firestore
+          .collection(productsCollection)
+          .where('p_wishlist', arrayContains: currentUser!.uid)
+          .get()
+          .then((value) {
+        return value.docs.length;
+      }),
+      firestore
+          .collection(ordersCollection)
+          .where('order_by', isEqualTo: currentUser!.uid)
+          .get()
+          .then((value) {
+        return value.docs.length;
+      }),
+    ]);
+    return res;
+  }
+
+  static allProducts() {
+    return firestore.collection(productsCollection).get();
+  }
+
+//   get featured products method
+  static getFeaturedProducts() {
+    return firestore
+        .collection(productsCollection)
+        .where('is_featured', isEqualTo: true)
+        .get();
+  }
+  static searchProducts(title){
+    return firestore.collection(productsCollection).get();
+  }
+
+
 }

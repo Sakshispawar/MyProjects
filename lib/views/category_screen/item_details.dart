@@ -16,7 +16,7 @@ class ItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.find<ProductController>();
+    var controller = Get.put(ProductController());
 
     return WillPopScope(
       onWillPop: () async {
@@ -35,19 +35,20 @@ class ItemDetails extends StatelessWidget {
           title: title!.text.color(darkFontGrey).fontFamily(bold).make(),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
-            Obx(()=> IconButton(
+            Obx(
+              () => IconButton(
                   onPressed: () {
                     if (controller.isFav.value) {
-                      controller.removeFromWishList(data.id,context);
+                      controller.removeFromWishList(data.id, context);
                       controller.isFav(false);
-                    }else{
-                      controller.addToWishList(data.id,context);
+                    } else {
+                      controller.addToWishList(data.id, context);
                       controller.isFav(true);
                     }
                   },
-                  icon:  Icon(
+                  icon: Icon(
                     Icons.favorite_outlined,
-                    color: controller.isFav.value? redColor:darkFontGrey,
+                    color: controller.isFav.value ? redColor : darkFontGrey,
                   )),
             )
           ],
@@ -324,16 +325,21 @@ class ItemDetails extends StatelessWidget {
               height: 60,
               child: ourButton(
                 onPress: () {
-                  controller.addToCart(
-                    color: data['p_colors'][controller.colorIndex.value],
-                    context: context,
-                    img: data['p_imgs'][0],
-                    qty: controller.quantity.value,
-                    sellerName: data['p_seller'],
-                    title: data['p_name'],
-                    tprice: controller.totalPrice.value,
-                  );
-                  VxToast.show(context, msg: "Added to cart");
+                 if(controller.quantity.value>0){
+                   controller.addToCart(
+                     color: data['p_colors'][controller.colorIndex.value],
+                     context: context,
+                     vendorId: data['vendor_id'],
+                     img: data['p_imgs'][0],
+                     qty: controller.quantity.value,
+                     sellerName: data['p_seller'],
+                     title: data['p_name'],
+                     tprice: controller.totalPrice.value,
+                   );
+                   VxToast.show(context, msg: "Added to cart");
+                 }else{
+                   VxToast.show(context, msg: "Select minimum 1 item");
+                 }
                 },
                 bgcolor: redColor,
                 textColor: whiteColor,

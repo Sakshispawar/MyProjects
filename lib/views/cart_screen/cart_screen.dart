@@ -17,11 +17,11 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: whiteColor,
         bottomNavigationBar: SizedBox(
-         height: 50,
+          height: 50,
           child: ourButton(
               bgcolor: redColor,
               onPress: () {
-                Get.to(()=>const ShippingDetails());
+                Get.to(() => const ShippingDetails());
               },
               textColor: whiteColor,
               title: "Proceed to shipping"),
@@ -50,21 +50,30 @@ class CartScreen extends StatelessWidget {
             } else {
               var data = snapshot.data!.docs;
               controller.calculate(data);
+              controller.productSnapshot = data;
+
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
+                child:
+                Column(
                   children: [
                     Expanded(
                         child: ListView.builder(
                             itemCount: data.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return ListTile(
-                                leading: Image.network("${data[index]['img']}"),
-                                title: "${data[index]['title']} (x${data[index]['qty']})"
-                                    .text
-                                    .size(16)
-                                    .fontFamily(semibold)
-                                    .make(),
+                              return
+                                ListTile(
+                                leading: Image.network(
+                                  "${data[index]['img']}",
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                                title:
+                                    "${data[index]['title']} (x${data[index]['qty']})"
+                                        .text
+                                        .size(16)
+                                        .fontFamily(semibold)
+                                        .make(),
                                 subtitle: "${data[index]['tprice']}"
                                     .numCurrency
                                     .text
@@ -105,7 +114,7 @@ class CartScreen extends StatelessWidget {
                         .color(lightGolden)
                         .make(),
                     10.heightBox,
-                               ],
+                  ],
                 ),
               );
             }
