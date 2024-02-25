@@ -1,5 +1,4 @@
-# dmart_app user side
+# dmart_app user side + seller side
 https://github.com/Sakshispawar/MyProjects
 
-#dmart_app seller side
 https://github.com/Sakshispawar/seller_flutter
